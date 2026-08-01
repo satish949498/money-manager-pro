@@ -1,0 +1,1 @@
+bash: type: nul: not foundrm -f srccomponents*.jsx srcpages*.jsx srcservicesapi.js srcstylesApp.css srcstylesindex.css srcApp.jsx srcmain.jsx
