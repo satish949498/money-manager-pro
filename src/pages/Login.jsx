@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import API from "../services/api";
 
 function Login() {
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -20,35 +23,52 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     try {
       const res = await API.post("/auth/login", formData);
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      alert("Login Successful");
+      toast.success("Login Successful");
 
       navigate("/dashboard");
-
     } catch (error) {
-      alert(error.response?.data?.message || "Login Failed");
+      toast.error(error.response?.data?.message || "Login Failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="center-screen">
-      <div className="card shadow-card p-4" style={{ width: "400px" }}>
-        <h2 className="text-center mb-4">💰 Money Manager</h2>
+     <div
+  className="card shadow-card p-5 border-0"
+  style={{
+    width: "430px",
+    borderRadius: "20px",
+    background: "#ffffff",
+  }}
+>
+        <h2 className="text-center fw-bold text-primary mb-2">
+  Money Manager Pro
+</h2>
+
+<p className="text-center text-muted mb-4">
+  Track your expenses with ease
+</p>
 
         <form onSubmit={handleLogin}>
 
           <input
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder="Email Address"
             className="form-control mb-3"
             value={formData.email}
             onChange={handleChange}
+            required
           />
 
           <input
@@ -58,21 +78,39 @@ function Login() {
             className="form-control mb-3"
             value={formData.password}
             onChange={handleChange}
+            required
           />
 
-          <button className="btn btn-primary w-100">
-            Login
+        <button
+  type="submit"
+  className="btn btn-primary btn-lg w-100 fw-semibold"
+  disabled={loading}
+  style={{
+    borderRadius: "12px",
+    height: "50px",
+  }}
+>
+            {loading ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </button>
 
         </form>
 
-        <p className="text-center mt-3">
-          Don't have an account?
-
+        <p className="text-center mt-3 mb-0">
+          Don't have an account?{" "}
           <Link to="/register">
-            {" "}Register
+            Register
           </Link>
-
         </p>
 
       </div>
