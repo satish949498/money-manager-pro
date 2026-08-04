@@ -55,13 +55,32 @@ function Dashboard() {
   if (!result.isConfirmed) return;
 
   try {
-    await API.delete(`/expenses/${id}`);
+   await API.delete(`/expenses/${id}`);
 
-    toast.success("Expense Deleted Successfully");
+// Remove the deleted expense immediately
+const updatedExpenses = expenses.filter((expense) => expense.id !== id);
+setExpenses(updatedExpenses);
 
-    fetchExpenses();
+// Update total expense
+const total = updatedExpenses.reduce(
+  (sum, item) => sum + Number(item.amount),
+  0
+);
+setTotalExpense(total);
+
+Swal.fire({
+  icon: "success",
+  title: "Deleted!",
+  text: "Expense deleted successfully.",
+  timer: 1500,
+  showConfirmButton: false,
+});
   } catch (error) {
-    toast.error(error.response?.data?.message || "Delete Failed");
+    Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: error.response?.data?.message || "Delete Failed",
+    });
   }
 };
 
