@@ -132,7 +132,7 @@ function Dashboard() {
 
             <div className="col-12 col-md-6 col-lg-4">
               <SummaryCard
-                title="Total Expense"
+                title="Funds Spent"
                 amount={`₹${totalExpense}`}
                 color="primary"
               />
@@ -140,7 +140,7 @@ function Dashboard() {
 
             <div className="col-12 col-md-6 col-lg-4">
               <SummaryCard
-                title="Transactions"
+                title="Expenses this Month"
                 amount={filteredExpenses.length}
                 color="success"
               />
