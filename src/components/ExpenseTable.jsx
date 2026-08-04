@@ -1,85 +1,107 @@
 import { useNavigate } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 function ExpenseTable({ expenses, handleDelete }) {
   const navigate = useNavigate();
 
   return (
-    <div className="card mt-5 shadow">
-
-      <div className="card-header">
-        <h5 className="mb-0">Recent Expenses</h5>
+    <div className="card shadow border-0 mt-4">
+      <div className="card-header bg-white py-3">
+        <h5 className="fw-bold mb-0">Recent Expenses</h5>
       </div>
 
-      <table className="table table-hover align-middle">
+      <div className="table-responsive">
+        <table className="table table-hover align-middle mb-0">
 
-        <thead className="table-light">
-          <tr>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th width="180">Action</th>
-          </tr>
-        </thead>
+          <thead className="table-light">
+            <tr>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th style={{ minWidth: "170px" }}>Action</th>
+            </tr>
+          </thead>
 
-        <tbody>
+          <tbody>
 
-          {expenses.length > 0 ? (
+            {expenses.length > 0 ? (
 
-            expenses.map((expense) => (
+              expenses.map((expense) => (
 
-              <tr key={expense.id}>
+                <tr key={expense.id}>
 
-                <td>{expense.title}</td>
+                  <td className="fw-semibold">
+                    {expense.title}
+                  </td>
 
-                <td>{expense.category}</td>
+                  <td>
+                    <span className="badge bg-primary">
+                      {expense.category}
+                    </span>
+                  </td>
 
-                <td>₹ {expense.amount}</td>
+                  <td className="fw-bold text-success">
+                    ₹ {expense.amount}
+                  </td>
 
-                <td>{expense.expense_date.slice(0, 10)}</td>
+                  <td>
+                    {expense.expense_date.slice(0, 10)}
+                  </td>
 
-                <td>
+                  <td>
 
-                  <button
-                    className="btn btn-warning btn-sm me-2"
-                    onClick={() =>
-                      navigate(`/edit-expense/${expense.id}`)
-                    }
-                  >
-                    Edit
-                  </button>
+                    <div className="d-flex flex-column flex-sm-row gap-2">
 
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleDelete(expense.id)}
-                  >
-                    Delete
-                  </button>
+                      <button
+                        className="btn btn-warning btn-sm"
+                        onClick={() =>
+                          navigate(`/edit-expense/${expense.id}`)
+                        }
+                      >
+                        <FaEdit className="me-1" />
+                        Edit
+                      </button>
 
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() =>
+                          handleDelete(expense.id)
+                        }
+                      >
+                        <FaTrash className="me-1" />
+                        Delete
+                      </button>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              ))
+
+            ) : (
+
+              <tr>
+
+                <td
+                  colSpan="5"
+                  className="text-center py-4"
+                >
+                  <h6 className="text-muted mb-0">
+                    No Expenses Found
+                  </h6>
                 </td>
 
               </tr>
 
-            ))
+            )}
 
-          ) : (
+          </tbody>
 
-            <tr>
-
-              <td colSpan="5" className="text-center">
-
-                No Expenses Found
-
-              </td>
-
-            </tr>
-
-          )}
-
-        </tbody>
-
-      </table>
-
+        </table>
+      </div>
     </div>
   );
 }

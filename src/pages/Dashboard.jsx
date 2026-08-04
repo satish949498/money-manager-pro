@@ -57,14 +57,12 @@ function Dashboard() {
     try {
       await API.delete(`/expenses/${id}`);
 
-      // Remove deleted expense immediately from UI
       const updatedExpenses = expenses.filter(
         (expense) => expense.id !== id
       );
 
       setExpenses(updatedExpenses);
 
-      // Update total expense
       const total = updatedExpenses.reduce(
         (sum, item) => sum + Number(item.amount),
         0
@@ -101,28 +99,38 @@ function Dashboard() {
       <div className="d-flex">
         <Sidebar />
 
-        <div className="container-fluid p-4">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h2 className="fw-bold">
+        <div
+          className="container-fluid p-3 p-md-4"
+          style={{ paddingBottom: "90px" }}
+        >
+          {/* Header */}
+          <div className="row align-items-center mb-4">
+
+            <div className="col-12 col-md-8 mb-3 mb-md-0">
+              <h2 className="fw-bold mb-1">
                 Welcome, {user?.name} 👋
               </h2>
 
-              <p className="text-muted">
+              <p className="text-muted mb-0">
                 Manage your expenses efficiently
               </p>
             </div>
 
-            <button
-              className="btn btn-success btn-lg"
-              onClick={() => navigate("/add-expense")}
-            >
-              + Add Expense
-            </button>
+            <div className="col-12 col-md-4 text-md-end">
+              <button
+                className="btn btn-success btn-lg w-100 w-md-auto"
+                onClick={() => navigate("/add-expense")}
+              >
+                + Add Expense
+              </button>
+            </div>
+
           </div>
 
-          <div className="row g-4">
-            <div className="col-lg-4">
+          {/* Summary Cards */}
+          <div className="row g-3">
+
+            <div className="col-12 col-md-6 col-lg-4">
               <SummaryCard
                 title="Total Expense"
                 amount={`₹${totalExpense}`}
@@ -130,7 +138,7 @@ function Dashboard() {
               />
             </div>
 
-            <div className="col-lg-4">
+            <div className="col-12 col-md-6 col-lg-4">
               <SummaryCard
                 title="Transactions"
                 amount={filteredExpenses.length}
@@ -138,24 +146,32 @@ function Dashboard() {
               />
             </div>
 
-            <div className="col-lg-4">
+            <div className="col-12 col-lg-4">
               <SummaryCard
                 title="User"
                 amount={user?.name}
                 color="warning"
               />
             </div>
+
           </div>
 
-          <SearchBar
-            search={search}
-            setSearch={setSearch}
-          />
+          {/* Search */}
+          <div className="mt-4">
+            <SearchBar
+              search={search}
+              setSearch={setSearch}
+            />
+          </div>
 
-          <ExpenseTable
-            expenses={filteredExpenses}
-            handleDelete={handleDelete}
-          />
+          {/* Expense Table */}
+          <div className="mt-4">
+            <ExpenseTable
+              expenses={filteredExpenses}
+              handleDelete={handleDelete}
+            />
+          </div>
+
         </div>
       </div>
     </>
